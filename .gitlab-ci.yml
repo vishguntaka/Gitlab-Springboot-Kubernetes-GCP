@@ -1,6 +1,6 @@
-image: docker:latest
-services:
-  - docker:dind
+#image: docker:latest
+#services:
+#  - docker:dind
 
 variables:
 #  DOCKER_DRIVER: overlay
@@ -21,12 +21,12 @@ maven-build:
 
 docker-build:
   stage: package
-  script:
-    - export DOCKER_HOST="tcp://localhost:2375"
-    - echo "DOCKER_HOST, $DOCKER_HOST!"
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker build -t registry.gitlab.com/vish_guntaka/springbooteshopping .
-    - docker push registry.gitlab.com/vish_guntaka/springbooteshopping
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+    script:
+      - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+      - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
 k8s-deploy:
   image: google/cloud-sdk
