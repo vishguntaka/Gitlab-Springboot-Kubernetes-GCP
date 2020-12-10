@@ -29,7 +29,7 @@ docker-build:
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
 k8s-deploy:
-  image: google/cloud-sdk
+  image: gcloud-with-envsubst:latest
   stage: deploy
   script:
     - echo "$GOOGLE_KEY" > key.json
