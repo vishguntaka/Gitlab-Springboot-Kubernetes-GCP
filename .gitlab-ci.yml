@@ -14,7 +14,7 @@ stages:
 maven-build:
   image: maven:3-jdk-8
   stage: build
-  script: "mvn package -B"
+  script: "mvn clean install"
   artifacts:
     paths:
       - target/*.jar
