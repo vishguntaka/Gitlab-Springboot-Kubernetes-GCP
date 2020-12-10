@@ -39,5 +39,7 @@ k8s-deploy:
     - gcloud config set container/use_client_certificate True
     - gcloud container clusters get-credentials eshopping-cluster
     #- kubectl delete secret registry.gitlab.com
+    - echo "$CI_REGISTRY_USER"
+    - echo $CI_REGISTRY_PASSWORD"
     - kubectl create secret docker-registry registry.gitlab.com --docker-server=https://registry.gitlab.com --docker-username=$CI_REGISTRY_USER --docker-password=$CI_REGISTRY_PASSWORD --docker-email=g_vishu@yahoo.com
     - kubectl apply -f deployment.yml
