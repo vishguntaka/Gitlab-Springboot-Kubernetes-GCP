@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eshopping-app
+  namespace: default
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: eshopping-app
+  template:
+    metadata:
+      labels:
+        app: eshopping-app
+    spec:
+      containers:
+        - name: eshopping-app-site
+          image: registry.gitlab.com/vish_guntaka/springbooteshopping/eshopping-app:1.0-SNAPSHOT
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8080
+        imagePullSecrets:
+          - name: registry.gitlab.com
