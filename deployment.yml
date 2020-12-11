@@ -19,5 +19,5 @@ spec:
           imagePullPolicy: Always
           ports:
           - containerPort: 8080
-        imagePullSecrets:
-          - name: registry.gitlab.com
+      imagePullSecrets:
+        - name: registry.gitlab.com
