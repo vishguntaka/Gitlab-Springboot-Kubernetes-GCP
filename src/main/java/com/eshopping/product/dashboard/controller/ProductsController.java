@@ -55,6 +55,8 @@ public class ProductsController {
 	public ResponseEntity<HttpStatus> updateProduct(@RequestBody Product product, @PathVariable("product_id") Long id) {
 		Optional<Product> existingProduct = productService.getProductById(id);
 
+		System.out.println("GET call ###### id=:"+ id);
+
 		if (!existingProduct.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
