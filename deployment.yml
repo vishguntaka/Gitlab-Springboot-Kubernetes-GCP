@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: eshopping-app-site
-          image: registry.gitlab.com/vish_guntaka/springbooteshopping/eshopping-app:1.0-SNAPSHOT
+          image: vish_guntaka/eshopping-app:1.0-SNAPSHOT
           imagePullPolicy: Always
           ports:
           - containerPort: 8080
