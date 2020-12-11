@@ -37,6 +37,7 @@ k8s-deploy:
     - gcloud config set compute/zone us-central1-a
     - gcloud config set project gitlab-kubernetes-298215
     - gcloud config set container/use_client_certificate True
+    - gcloud auth list
     - gcloud container clusters get-credentials eshopping-cluster
     #- kubectl delete secret registry.gitlab.com
 #    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
