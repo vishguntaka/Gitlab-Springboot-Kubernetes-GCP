@@ -25,8 +25,9 @@ docker-build:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   script:
+    - echo "$CI_REGISTRY_IMAGE"
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination vish_guntaka/eshopping-app:1.0-SNAPSHOT
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:latest
 
 k8s-deploy:
   image: google/cloud-sdk
