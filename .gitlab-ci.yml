@@ -41,5 +41,5 @@ k8s-deploy:
     #- kubectl delete secret registry.gitlab.com
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - kubectl get pods
-    - kubectl create secret docker-registry registry.gitlab.com --docker-server=$CI_REGISTRY --docker-username=$CI_REGISTRY_USER --docker-password=CI_BUILD_TOKEN  --docker-email=GITLAB_USER_EMAIL
+    #- kubectl create secret docker-registry registry.gitlab.com --docker-server=$CI_REGISTRY --docker-username=$CI_REGISTRY_USER --docker-password=CI_BUILD_TOKEN  --docker-email=GITLAB_USER_EMAIL
     - kubectl apply -f deployment.yml
