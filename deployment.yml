@@ -17,7 +17,5 @@ spec:
         - name: eshopping-app-site
           image: registry.gitlab.com/vish_guntaka/springbooteshopping/eshopping-app:latest
           imagePullPolicy: Always
-          ports:
-          - containerPort: 8080
       imagePullSecrets:
         - name: registry.gitlab.com
