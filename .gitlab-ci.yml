@@ -1,10 +1,8 @@
-#image: docker:latest
-#services:
-#  - docker:dind
 
 variables:
-#  DOCKER_DRIVER: overlay
   SPRING_PROFILES_ACTIVE: gitlab-ci
+  MAVEN_IMAGE:maven:3-jdk-8
+
 
 stages:
   - build
@@ -12,9 +10,12 @@ stages:
   - deploy
 
 maven-build:
-  image: maven:3-jdk-8
+  image: ${MAVEN_IMAGE}
   stage: build
   script: "mvn clean install"
+  after_script:
+    - 'cat target/jacoco-report/index.html || true'
+    - 'mv target/jacoco-report . || true'
   artifacts:
     paths:
       - target/*.jar
@@ -29,6 +30,21 @@ docker-build:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE/eshopping-app:latest
 
+pages:
+  image: ${MAVEN_IMAGE}
+  stage: deploy
+  dependencies:
+    - maven:master
+  script:
+    - 'mkdir public'
+    - 'mv jacoco-report/* public || true'
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 month
+  only:
+    - master
+
 k8s-deploy:
   image: google/cloud-sdk
   stage: deploy
@@ -39,8 +55,4 @@ k8s-deploy:
     - gcloud config set project gitlab-kubernetes-298215
     - gcloud config set container/use_client_certificate False
     - gcloud container clusters get-credentials eshopping-cluster
-    #- kubectl delete secret registry.gitlab.com
-#    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-#    - kubectl get pods
-    #- kubectl create secret docker-registry registry.gitlab.com --docker-server=$CI_REGISTRY --docker-username=$CI_REGISTRY_USER --docker-password=CI_BUILD_TOKEN  --docker-email=GITLAB_USER_EMAIL
     - kubectl apply -f deployment.yml
