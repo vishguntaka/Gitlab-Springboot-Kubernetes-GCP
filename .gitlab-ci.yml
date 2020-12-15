@@ -34,7 +34,7 @@ pages:
   image: ${MAVEN_IMAGE}
   stage: deploy
   dependencies:
-    - maven:master
+    - maven-build
   script:
     - 'mkdir public'
     - 'mv jacoco-report/* public || true'
