@@ -12,13 +12,14 @@ stages:
 maven-build:
   image: ${MAVEN_IMAGE}
   stage: build
-  script: "mvn clean install"
-  after_script:
+  script:
+    - "mvn clean install"
     - 'cat target/jacoco-report/index.html || true'
     - 'mv target/jacoco-report . || true'
   artifacts:
     paths:
       - target/*.jar
+      - 'jacoco-report'
 
 docker-build:
   stage: package
