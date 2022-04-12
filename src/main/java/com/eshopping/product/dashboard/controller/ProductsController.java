@@ -26,10 +26,12 @@ public class ProductsController {
      */
     @PostMapping
     public ResponseEntity<HttpStatus> saveProduct(@RequestBody Product product) {
-        Optional<Product> existingProduct = productService.getProductById(product.getId());
+        if (product.getId() != null) {
+            Optional<Product> existingProduct = productService.getProductById(product.getId());
 
-        if (existingProduct.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            if (existingProduct.isPresent()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         }
 
         productService.saveOrUpdate(product);
